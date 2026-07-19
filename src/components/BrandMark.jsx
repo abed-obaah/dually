@@ -1,14 +1,18 @@
 /**
- * Dually app icon — uses the real logo from /public/logo.png.
- * Reused in the navbar, hero, and footer. To change the logo,
- * replace public/logo.png (keeps the same import path).
+ * Dually app icon. Reused in the navbar, hero, and footer.
+ * Pass `src` to choose a logo variant (white on dark surfaces,
+ * black on light surfaces). Defaults to the white logo.
  */
-export default function BrandMark({ className = 'h-9 w-9', alt = 'Dually logo' }) {
+export default function BrandMark({
+  className = 'h-9 w-9',
+  alt = 'Dually logo',
+  src = '/dually-logo-white-removebg-preview.png',
+}) {
   return (
     <img
-      src="/logo.png"
+      src={src}
       alt={alt}
-      className={`inline-block rounded-2xl object-cover ${className}`}
+      className={`inline-block object-contain ${className}`}
     />
   )
 }

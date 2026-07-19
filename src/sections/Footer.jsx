@@ -21,7 +21,7 @@ export default function Footer() {
       <div className="container-px">
         <div className="flex flex-col items-center gap-8 border-b border-white/10 pb-10 text-center">
           <a href="#top" className="flex items-center gap-2.5">
-            <BrandMark className="h-9 w-9" />
+            <BrandMark className="h-9 w-9" src="/dually-logo-black.20_PM-removebg-preview.png" />
             <span className="text-lg font-extrabold tracking-tight">Dually</span>
           </a>
 
