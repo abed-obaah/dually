@@ -1,0 +1,2 @@
+# Drop static images (logos, screenshots, AR overlays) here.
+# Import them in components, e.g. `import hero from '../assets/hero.png'`.

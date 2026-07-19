@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    @apply bg-orange-500 text-white;
+  }
+}
+
+@layer components {
+  /* Reusable gradient text (orange) */
+  .text-orange-grad {
+    @apply bg-gradient-to-b from-orange-400 to-orange-600 bg-clip-text text-transparent;
+  }
+
+  /* Frosted-glass surface for the floating navbar */
+  .glass {
+    @apply bg-paper/80 backdrop-blur-xl border border-black/5;
+  }
+
+  /* Section container */
+  .container-px {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  /* Small uppercase-ish pill badge used above section headings */
+  .pill {
+    @apply inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-sm font-semibold;
+  }
+}
+
+@layer utilities {
+  /* Soft radial glow (hero background) */
+  .hero-glow {
+    background:
+      radial-gradient(60% 50% at 50% 100%, rgba(242, 102, 28, 0.20), transparent 70%),
+      radial-gradient(40% 40% at 50% 100%, rgba(236, 72, 12, 0.14), transparent 70%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float,
+    .animate-marquee {
+      animation: none !important;
+    }
+  }
+}
+
+/* Custom minimal scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #e2d9c7;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #d0c4ad;
+}
