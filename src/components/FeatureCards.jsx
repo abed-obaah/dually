@@ -106,18 +106,18 @@ const FEATURES = [
       'Broadcast from your front and rear cameras simultaneously.',
     Mock: DualCamMock,
   },
-  {
-    icon: Sparkles,
-    title: 'Augmented Reality Effects',
-    description: 'Add interactive AR filters and effects while streaming live.',
-    Mock: ArMock,
-  },
-  {
-    icon: DollarSign,
-    title: 'Creator Monetization',
-    description: 'Turn your audience into a thriving community.',
-    Mock: MoneyMock,
-  },
+  // {
+  //   icon: Sparkles,
+  //   title: 'Augmented Reality Effects',
+  //   description: 'Add interactive AR filters and effects while streaming live.',
+  //   Mock: ArMock,
+  // },
+  // {
+  //   icon: DollarSign,
+  //   title: 'Creator Monetization',
+  //   description: 'Turn your audience into a thriving community.',
+  //   Mock: MoneyMock,
+  // },
   {
     icon: MessageSquare,
     title: 'Real-Time Engagement',

@@ -13,10 +13,10 @@ const FAQS = [
     q: 'Which devices support dual-camera streaming?',
     a: 'Dually runs on iOS 15+ and Android 11+. Simultaneous front-and-rear streaming requires a device with multi-cam support, which includes most phones released in the last few years.',
   },
-  {
-    q: 'How does creator monetization work?',
-    a: 'Creators earn through live tipping, monthly subscriptions, and brand collaborations. Payouts are handled securely in-app, and you keep the majority of everything you earn — no surprise deductions.',
-  },
+  // {
+  //   q: 'How does creator monetization work?',
+  //   a: 'Creators earn through live tipping, monthly subscriptions, and brand collaborations. Payouts are handled securely in-app, and you keep the majority of everything you earn — no surprise deductions.',
+  // },
   {
     q: 'Are the AR effects free to use?',
     a: 'Every creator gets access to our full library of 120+ AR filters and effects at no cost. New effects are added every week, and premium seasonal packs are unlocked as you grow your audience.',
