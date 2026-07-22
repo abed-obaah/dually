@@ -52,7 +52,7 @@ export default function Navbar() {
           }`}
         >
           {/* Logo */}
-          <a href="#top" className="flex shrink-0 items-center gap-2.5">
+          <a href="#top" className="flex shrink-0 items-center gap-1.5">
             <BrandMark className="h-9 w-9" />
             <span className="text-lg font-extrabold tracking-tight text-ink">
               Dually
