@@ -94,30 +94,8 @@ export default function HeroSection() {
             />
           </div>
 
-          {/* Left phone (desktop/tablet) — positioning on the wrapper, tilt on the motion child */}
-          <div className="absolute left-1/2 top-6 hidden w-[300px] -translate-x-[84%] sm:block">
-            <motion.div
-              initial={{ opacity: 0, y: 90, rotate: -11, filter: 'blur(12px)' }}
-              animate={{ opacity: 1, y: 0, rotate: -5.35, filter: 'blur(0px)' }}
-              transition={{ duration: 1, delay: 0.5, ease: EASE }}
-            >
-              <AppMockup reactions={false} videoOverlay={true} />
-            </motion.div>
-          </div>
-
-          {/* Right phone (desktop/tablet) */}
-          <div className="absolute left-1/2 top-6 hidden w-[300px] -translate-x-[16%] sm:block">
-            <motion.div
-              initial={{ opacity: 0, y: 90, rotate: 11, filter: 'blur(12px)' }}
-              animate={{ opacity: 1, y: 0, rotate: 8.11, filter: 'blur(0px)' }}
-              transition={{ duration: 1, delay: 0.62, ease: EASE }}
-            >
-              <AppMockup reactions={false} videoOverlay={true} />
-            </motion.div>
-          </div>
-
-          {/* Single centered phone on mobile */}
-          <div className="absolute left-1/2 top-6 w-[270px] -translate-x-1/2 sm:hidden">
+          {/* Single centered phone for all viewports */}
+          <div className="absolute left-1/2 top-6 w-[300px] -translate-x-1/2">
             <motion.div
               initial={{ opacity: 0, y: 90, filter: 'blur(12px)' }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
