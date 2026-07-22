@@ -25,10 +25,10 @@ export default function Navbar() {
   const handleMobileNav = (e, href) => {
     e.preventDefault()
     const target = document.querySelector(href)
-    const headerHeight = headerRef.current?.offsetHeight ?? 0
+    const headerHeight = headerRef.current?.offsetHeight ?? 60
 
     if (target) {
-      const top = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 8
+      const top = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 32
       window.scrollTo({ top, behavior: 'smooth' })
     } else {
       window.location.hash = href
