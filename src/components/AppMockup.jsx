@@ -95,46 +95,104 @@ export default function AppMockup({ className = '', reactions = true, videoOverl
   }, [])
   return (
     <div className={`relative ${className}`}>
-      {/* Full video view when videoOverlay is true */}
+      {/* Full video view on mobile, phone frame on desktop */}
       {videoOverlay ? (
-        <div className="relative w-full aspect-[9/16] overflow-hidden rounded-3xl bg-black">
-          <video
-            ref={videoRef}
-            src="/dually.mp4"
-            className="absolute inset-0 h-full w-full object-cover cursor-pointer"
-            loop
-            playsInline
-            onError={handleVideoError}
-            onPointerDown={(e) => {
-              e.stopPropagation()
-              togglePlayPause()
-            }}
-          />
+        <>
+          {/* Mobile: Full video without frame */}
+          <div className="md:hidden relative w-full aspect-[9/16] overflow-hidden rounded-3xl bg-black">
+            <video
+              ref={videoRef}
+              src="/dually.mp4"
+              className="absolute inset-0 h-full w-full object-cover cursor-pointer"
+              loop
+              playsInline
+              onError={handleVideoError}
+              onPointerDown={(e) => {
+                e.stopPropagation()
+                togglePlayPause()
+              }}
+            />
 
-          {videoError && (
-            <div className="absolute inset-0 flex items-center justify-center bg-red-500/80">
-              <span className="text-xs text-white text-center px-4">{videoError}</span>
-            </div>
-          )}
+            {videoError && (
+              <div className="absolute inset-0 flex items-center justify-center bg-red-500/80">
+                <span className="text-xs text-white text-center px-4">{videoError}</span>
+              </div>
+            )}
 
-          <motion.button
-            onPointerDown={(e) => {
-              e.stopPropagation()
-              togglePlayPause()
-            }}
-            className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors z-10"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 shadow-lg">
-              {isPlaying ? (
-                <Pause className="h-6 w-6 text-orange-500" />
-              ) : (
-                <Play className="h-6 w-6 text-orange-500" />
-              )}
+            <motion.button
+              onPointerDown={(e) => {
+                e.stopPropagation()
+                togglePlayPause()
+              }}
+              className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors z-10"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 shadow-lg">
+                {isPlaying ? (
+                  <Pause className="h-6 w-6 text-orange-500" />
+                ) : (
+                  <Play className="h-6 w-6 text-orange-500" />
+                )}
+              </div>
+            </motion.button>
+          </div>
+
+          {/* Desktop: Phone frame with full video inside */}
+          <div className="hidden md:block relative rounded-[3rem] bg-gradient-to-br from-[#efeadd] via-[#d6d1bf] to-[#b1ac99] p-[4px] shadow-[0_45px_90px_-28px_rgba(24,24,27,0.45)]">
+            {/* Side buttons */}
+            <span className="absolute -left-[3px] top-[20%] h-9 w-[3px] rounded-l-sm bg-[#a9a48f]" />
+            <span className="absolute -left-[3px] top-[31%] h-14 w-[3px] rounded-l-sm bg-[#a9a48f]" />
+            <span className="absolute -left-[3px] top-[45%] h-14 w-[3px] rounded-l-sm bg-[#a9a48f]" />
+            <span className="absolute -right-[3px] top-[28%] h-20 w-[3px] rounded-r-sm bg-[#a9a48f]" />
+
+            {/* Black bezel */}
+            <div className="relative rounded-[2.72rem] bg-black p-[9px]">
+              {/* Screen */}
+              <div className="screen relative aspect-[9/19.5] overflow-hidden rounded-[2.2rem] bg-black">
+                <video
+                  ref={videoRef}
+                  src="/dually.mp4"
+                  className="absolute inset-0 h-full w-full object-cover cursor-pointer"
+                  loop
+                  playsInline
+                  onError={handleVideoError}
+                  onPointerDown={(e) => {
+                    e.stopPropagation()
+                    togglePlayPause()
+                  }}
+                />
+
+                {videoError && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-red-500/80">
+                    <span className="text-xs text-white text-center px-4">{videoError}</span>
+                  </div>
+                )}
+
+                <motion.button
+                  onPointerDown={(e) => {
+                    e.stopPropagation()
+                    togglePlayPause()
+                  }}
+                  className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors z-10"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 shadow-lg">
+                    {isPlaying ? (
+                      <Pause className="h-6 w-6 text-orange-500" />
+                    ) : (
+                      <Play className="h-6 w-6 text-orange-500" />
+                    )}
+                  </div>
+                </motion.button>
+
+                {/* Home indicator */}
+                <div className="absolute bottom-2 left-1/2 z-40 h-1 w-1/3 -translate-x-1/2 rounded-full bg-white/60" />
+              </div>
             </div>
-          </motion.button>
-        </div>
+          </div>
+        </>
       ) : (
         <>
           {/* Titanium metal frame for app mockup view */}
