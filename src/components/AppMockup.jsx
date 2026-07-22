@@ -42,19 +42,27 @@ export default function AppMockup({ className = '', reactions = true, videoOverl
     }
   }, [isPlaying])
 
-  // Try to play the video immediately from a user gesture and log errors
-  const attemptPlay = async () => {
+  // Try to play or pause the video from a user gesture
+  const togglePlayPause = async () => {
     if (!videoRef.current) return
     try {
-      const p = videoRef.current.play()
-      if (p && p.then) {
-        await p
+      if (isPlaying) {
+        // Pause
+        videoRef.current.pause()
+        setIsPlaying(false)
+      } else {
+        // Play
+        videoRef.current.currentTime = 0
+        const p = videoRef.current.play()
+        if (p && p.then) {
+          await p
+        }
+        setIsPlaying(true)
+        setVideoError(null)
+        notifyPlay()
       }
-      setIsPlaying(true)
-      setVideoError(null)
-      notifyPlay()
     } catch (err) {
-      console.error('Attempted play failed:', err)
+      console.error('Toggle play/pause failed:', err)
       setVideoError(err.message || 'Playback failed')
     }
   }
@@ -112,7 +120,7 @@ export default function AppMockup({ className = '', reactions = true, videoOverl
                   // pointer down is a reliable user gesture for many browsers
                   onPointerDown={(e) => {
                     e.stopPropagation()
-                    attemptPlay()
+                    togglePlayPause()
                   }}
                 />
 
@@ -125,7 +133,7 @@ export default function AppMockup({ className = '', reactions = true, videoOverl
                 <motion.button
                   onPointerDown={(e) => {
                     e.stopPropagation()
-                    attemptPlay()
+                    togglePlayPause()
                   }}
                   className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors z-10"
                   whileHover={{ scale: 1.02 }}
