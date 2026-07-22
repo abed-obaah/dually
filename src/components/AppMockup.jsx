@@ -97,7 +97,7 @@ export default function AppMockup({ className = '', reactions = true, videoOverl
     <div className={`relative ${className}`}>
       {/* Phone frame with full video on all views */}
       {videoOverlay ? (
-        <div className="relative rounded-[3rem] bg-gradient-to-br from-[#efeadd] via-[#d6d1bf] to-[#b1ac99] p-[4px] shadow-[0_45px_90px_-28px_rgba(24,24,27,0.45)] max-w-md mx-auto">
+        <div className="relative w-full md:max-w-md md:mx-auto rounded-[3rem] bg-gradient-to-br from-[#efeadd] via-[#d6d1bf] to-[#b1ac99] p-[4px] shadow-[0_45px_90px_-28px_rgba(24,24,27,0.45)]">
           {/* Side buttons */}
           <span className="absolute -left-[3px] top-[20%] h-9 w-[3px] rounded-l-sm bg-[#a9a48f]" />
           <span className="absolute -left-[3px] top-[31%] h-14 w-[3px] rounded-l-sm bg-[#a9a48f]" />
