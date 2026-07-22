@@ -41,6 +41,23 @@ export default function AppMockup({ className = '', reactions = true, videoOverl
     }
   }, [isPlaying])
 
+  // Try to play the video immediately from a user gesture and log errors
+  const attemptPlay = async () => {
+    if (!videoRef.current) return
+    try {
+      const p = videoRef.current.play()
+      if (p && p.then) {
+        await p
+      }
+      setIsPlaying(true)
+      notifyPlay()
+    } catch (err) {
+      console.error('Attempted play failed:', err)
+      // Helpful hint for debugging in production: show a visible message
+      // (we keep console logging — user should check browser console)
+    }
+  }
+
   // Pause this instance if another instance starts playing
   useEffect(() => {
     const handler = (e) => {
@@ -78,11 +95,18 @@ export default function AppMockup({ className = '', reactions = true, videoOverl
                   className="absolute inset-0 h-full w-full object-cover cursor-pointer"
                   loop
                   playsInline
-                  onClick={() => setIsPlaying((s) => !s)}
+                  // pointer down is a reliable user gesture for many browsers
+                  onPointerDown={(e) => {
+                    e.stopPropagation()
+                    attemptPlay()
+                  }}
                 />
 
                 <motion.button
-                  onClick={() => setIsPlaying((s) => !s)}
+                  onPointerDown={(e) => {
+                    e.stopPropagation()
+                    attemptPlay()
+                  }}
                   className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors z-10"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
