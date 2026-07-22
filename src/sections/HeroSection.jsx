@@ -72,30 +72,10 @@ export default function HeroSection() {
         </motion.div>
       </div>
 
-      {/* Dual phone mockups fanned out, dissolving into the page */}
+      {/* Single centered phone mockup */}
       <div className="container-px relative">
-        <div
-          className="relative mx-auto mt-16 h-[400px] max-w-4xl sm:h-[480px] lg:h-[560px]"
-          style={{
-            WebkitMaskImage:
-              'linear-gradient(to bottom, #000 80%, transparent 100%)',
-            maskImage: 'linear-gradient(to bottom, #000 80%, transparent 100%)',
-          }}
-        >
-          {/* Soft blur glow behind the phones */}
-          <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-            <div
-              className="absolute left-[32%] top-[22%] h-56 w-56 rounded-full bg-orange-400/25 blur-3xl"
-              style={{ transform: 'skewY(14deg)' }}
-            />
-            <div
-              className="absolute right-[30%] top-[8%] h-64 w-64 rounded-full bg-orange-300/20 blur-3xl"
-              style={{ transform: 'rotate(-150deg) skewY(16deg)' }}
-            />
-          </div>
-
-          {/* Single centered phone for all viewports */}
-          <div className="absolute left-1/2 top-6 w-[min(92vw,380px)] -translate-x-1/2">
+        <div className="relative mx-auto mt-16 flex justify-center">
+          <div className="w-full max-w-[min(92vw,420px)]">
             <motion.div
               initial={{ opacity: 0, y: 90, filter: 'blur(12px)', rotate: 0 }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)', rotate: 0 }}
