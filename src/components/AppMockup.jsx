@@ -136,13 +136,14 @@ export default function AppMockup({ className = '', reactions = true, videoOverl
           </motion.button>
         </div>
       ) : (
-      {/* Titanium metal frame for app mockup view */}
-      <div className="relative rounded-[3rem] bg-gradient-to-br from-[#efeadd] via-[#d6d1bf] to-[#b1ac99] p-[4px] shadow-[0_45px_90px_-28px_rgba(24,24,27,0.45)]">
-        {/* Side buttons */}
-        <span className="absolute -left-[3px] top-[20%] h-9 w-[3px] rounded-l-sm bg-[#a9a48f]" />
-        <span className="absolute -left-[3px] top-[31%] h-14 w-[3px] rounded-l-sm bg-[#a9a48f]" />
-        <span className="absolute -left-[3px] top-[45%] h-14 w-[3px] rounded-l-sm bg-[#a9a48f]" />
-        <span className="absolute -right-[3px] top-[28%] h-20 w-[3px] rounded-r-sm bg-[#a9a48f]" />
+        <>
+          {/* Titanium metal frame for app mockup view */}
+          <div className="relative rounded-[3rem] bg-gradient-to-br from-[#efeadd] via-[#d6d1bf] to-[#b1ac99] p-[4px] shadow-[0_45px_90px_-28px_rgba(24,24,27,0.45)]">
+            {/* Side buttons */}
+            <span className="absolute -left-[3px] top-[20%] h-9 w-[3px] rounded-l-sm bg-[#a9a48f]" />
+            <span className="absolute -left-[3px] top-[31%] h-14 w-[3px] rounded-l-sm bg-[#a9a48f]" />
+            <span className="absolute -left-[3px] top-[45%] h-14 w-[3px] rounded-l-sm bg-[#a9a48f]" />
+            <span className="absolute -right-[3px] top-[28%] h-20 w-[3px] rounded-r-sm bg-[#a9a48f]" />
 
         {/* Black bezel */}
         <div className="relative rounded-[2.72rem] bg-black p-[9px]">
@@ -255,6 +256,7 @@ export default function AppMockup({ className = '', reactions = true, videoOverl
           </div>
         </div>
       </div>
+        </>
       )}
     </div>
   )
