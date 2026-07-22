@@ -12,6 +12,7 @@ import { useState, useRef, useEffect } from 'react'
  */
 export default function AppMockup({ className = '', reactions = true, videoOverlay = false }) {
   const [isPlaying, setIsPlaying] = useState(false)
+  const [videoError, setVideoError] = useState(null)
   const videoRef = useRef(null)
   const instanceId = useRef(`dually-video-${Math.random().toString(36).slice(2)}`)
 
@@ -50,12 +51,24 @@ export default function AppMockup({ className = '', reactions = true, videoOverl
         await p
       }
       setIsPlaying(true)
+      setVideoError(null)
       notifyPlay()
     } catch (err) {
       console.error('Attempted play failed:', err)
-      // Helpful hint for debugging in production: show a visible message
-      // (we keep console logging — user should check browser console)
+      setVideoError(err.message || 'Playback failed')
     }
+  }
+
+  const handleVideoError = (e) => {
+    const video = videoRef.current
+    let msg = 'Video failed to load'
+    if (video) {
+      if (video.error?.code === 4) msg = 'Video format not supported'
+      else if (video.error?.code === 2) msg = 'Network error'
+      else if (video.error?.code === 1) msg = 'Video loading aborted'
+    }
+    console.error('Video error:', msg, e)
+    setVideoError(msg)
   }
 
   // Pause this instance if another instance starts playing
@@ -95,12 +108,19 @@ export default function AppMockup({ className = '', reactions = true, videoOverl
                   className="absolute inset-0 h-full w-full object-cover cursor-pointer"
                   loop
                   playsInline
+                  onError={handleVideoError}
                   // pointer down is a reliable user gesture for many browsers
                   onPointerDown={(e) => {
                     e.stopPropagation()
                     attemptPlay()
                   }}
                 />
+
+                {videoError && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-red-500/80">
+                    <span className="text-xs text-white text-center px-4">{videoError}</span>
+                  </div>
+                )}
 
                 <motion.button
                   onPointerDown={(e) => {
