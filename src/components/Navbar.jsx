@@ -21,6 +21,14 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  const handleMobileNav = (href) => {
+    setOpen(false)
+    const target = document.querySelector(href)
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
   return (
     <motion.header
       initial={{ y: -80, opacity: 0 }}
@@ -94,7 +102,10 @@ export default function Navbar() {
                   <li key={link.href}>
                     <a
                       href={link.href}
-                      onClick={() => setOpen(false)}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        handleMobileNav(link.href)
+                      }}
                       className="block rounded-2xl px-4 py-3 text-base font-medium text-ink transition-colors hover:bg-black/5"
                     >
                       {link.label}
@@ -104,7 +115,10 @@ export default function Navbar() {
               </ul>
               <a
                 href="#download"
-                onClick={() => setOpen(false)}
+                onClick={(e) => {
+                  e.preventDefault()
+                  handleMobileNav('#download')
+                }}
                 className="mt-3 flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-[15px] font-semibold text-white"
               >
                 Download <Download className="h-4 w-4" />
