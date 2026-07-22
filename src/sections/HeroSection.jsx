@@ -75,7 +75,7 @@ export default function HeroSection() {
       {/* Single centered phone mockup */}
       <div className="container-px relative">
         <div className="relative mx-auto mt-16 flex justify-center">
-          <div className="w-full max-w-[min(86vw,360px)] sm:max-w-[400px]">
+          <div className="w-full max-w-[min(82vw,330px)] sm:max-w-[360px]">
             <motion.div
               initial={{ opacity: 0, y: 90, filter: 'blur(12px)', rotate: 0 }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)', rotate: 0 }}
