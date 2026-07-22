@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Download } from 'lucide-react'
 import BrandMark from './BrandMark'
@@ -13,6 +13,7 @@ const NAV_LINKS = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const headerRef = useRef(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -24,9 +25,11 @@ export default function Navbar() {
   const handleMobileNav = (e, href) => {
     e.preventDefault()
     const target = document.querySelector(href)
+    const headerHeight = headerRef.current?.offsetHeight ?? 0
 
     if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      const top = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 8
+      window.scrollTo({ top, behavior: 'smooth' })
     } else {
       window.location.hash = href
     }
@@ -36,6 +39,7 @@ export default function Navbar() {
 
   return (
     <motion.header
+      ref={headerRef}
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
