@@ -23,43 +23,28 @@ export default function AppMockup({ className = '', reactions = true, videoOverl
     )
   }
 
-  useEffect(() => {
-    if (!videoRef.current) return
+  // Try to play or pause the video from a user gesture.
+  // Keep the play call directly inside the click handler so mobile browsers
+  // treat it as a user-initiated action.
+  const togglePlayPause = () => {
+    const video = videoRef.current
+    if (!video) return
 
-    if (isPlaying) {
-      // reset to start for UX parity
-      try {
-        videoRef.current.currentTime = 0
-        // play may return a promise that rejects on autoplay policies
-        const p = videoRef.current.play()
-        if (p && p.catch) p.catch(err => console.error('Video play error:', err))
-      } catch (err) {
-        console.error('Video play error:', err)
-      }
-      notifyPlay()
-    } else {
-      videoRef.current.pause()
-    }
-  }, [isPlaying])
-
-  // Try to play or pause the video from a user gesture
-  const togglePlayPause = async () => {
-    if (!videoRef.current) return
     try {
-      if (isPlaying) {
-        // Pause
-        videoRef.current.pause()
-        setIsPlaying(false)
-      } else {
-        // Play
-        videoRef.current.currentTime = 0
-        const p = videoRef.current.play()
-        if (p && p.then) {
-          await p
+      if (video.paused) {
+        const playPromise = video.play()
+        if (playPromise && playPromise.catch) {
+          playPromise.catch((err) => {
+            console.error('Video play error:', err)
+            setVideoError(err.message || 'Playback failed')
+          })
         }
         setIsPlaying(true)
         setVideoError(null)
         notifyPlay()
+      } else {
+        video.pause()
+        setIsPlaying(false)
       }
     } catch (err) {
       console.error('Toggle play/pause failed:', err)
@@ -115,7 +100,7 @@ export default function AppMockup({ className = '', reactions = true, videoOverl
                 loop
                 playsInline
                 onError={handleVideoError}
-                onPointerDown={(e) => {
+                onClick={(e) => {
                   e.stopPropagation()
                   togglePlayPause()
                 }}
@@ -128,7 +113,7 @@ export default function AppMockup({ className = '', reactions = true, videoOverl
               )}
 
               <motion.button
-                onPointerDown={(e) => {
+                onClick={(e) => {
                   e.stopPropagation()
                   togglePlayPause()
                 }}
