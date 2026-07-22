@@ -95,13 +95,13 @@ export default function HeroSection() {
           </div>
 
           {/* Single centered phone for all viewports */}
-          <div className="absolute left-1/2 top-6 w-[300px] -translate-x-1/2 rotate-0">
+          <div className="absolute left-1/2 top-6 w-[min(92vw,380px)] -translate-x-1/2">
             <motion.div
               initial={{ opacity: 0, y: 90, filter: 'blur(12px)', rotate: 0 }}
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)', rotate: 0 }}
               transition={{ duration: 1, delay: 0.5, ease: EASE }}
             >
-              <AppMockup className="rotate-0 transform-none" videoOverlay={true} />
+              <AppMockup className="w-full rotate-0 transform-none" videoOverlay={true} />
             </motion.div>
           </div>
         </div>
