@@ -101,7 +101,7 @@ export default function HeroSection() {
               animate={{ opacity: 1, y: 0, rotate: -5.35, filter: 'blur(0px)' }}
               transition={{ duration: 1, delay: 0.5, ease: EASE }}
             >
-              <AppMockup reactions={false} />
+              <AppMockup reactions={false} videoOverlay={true} />
             </motion.div>
           </div>
 
@@ -112,7 +112,7 @@ export default function HeroSection() {
               animate={{ opacity: 1, y: 0, rotate: 8.11, filter: 'blur(0px)' }}
               transition={{ duration: 1, delay: 0.62, ease: EASE }}
             >
-              <AppMockup reactions={false} />
+              <AppMockup reactions={false} videoOverlay={true} />
             </motion.div>
           </div>
 
@@ -123,7 +123,7 @@ export default function HeroSection() {
               animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               transition={{ duration: 1, delay: 0.5, ease: EASE }}
             >
-              <AppMockup />
+              <AppMockup videoOverlay={true} />
             </motion.div>
           </div>
         </div>
