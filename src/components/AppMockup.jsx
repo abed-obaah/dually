@@ -95,7 +95,48 @@ export default function AppMockup({ className = '', reactions = true, videoOverl
   }, [])
   return (
     <div className={`relative ${className}`}>
-      {/* Titanium metal frame */}
+      {/* Full video view when videoOverlay is true */}
+      {videoOverlay ? (
+        <div className="relative w-full aspect-[9/16] overflow-hidden rounded-3xl bg-black">
+          <video
+            ref={videoRef}
+            src="/dually.mp4"
+            className="absolute inset-0 h-full w-full object-cover cursor-pointer"
+            loop
+            playsInline
+            onError={handleVideoError}
+            onPointerDown={(e) => {
+              e.stopPropagation()
+              togglePlayPause()
+            }}
+          />
+
+          {videoError && (
+            <div className="absolute inset-0 flex items-center justify-center bg-red-500/80">
+              <span className="text-xs text-white text-center px-4">{videoError}</span>
+            </div>
+          )}
+
+          <motion.button
+            onPointerDown={(e) => {
+              e.stopPropagation()
+              togglePlayPause()
+            }}
+            className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors z-10"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 shadow-lg">
+              {isPlaying ? (
+                <Pause className="h-6 w-6 text-orange-500" />
+              ) : (
+                <Play className="h-6 w-6 text-orange-500" />
+              )}
+            </div>
+          </motion.button>
+        </div>
+      ) : (
+      {/* Titanium metal frame for app mockup view */}
       <div className="relative rounded-[3rem] bg-gradient-to-br from-[#efeadd] via-[#d6d1bf] to-[#b1ac99] p-[4px] shadow-[0_45px_90px_-28px_rgba(24,24,27,0.45)]">
         {/* Side buttons */}
         <span className="absolute -left-[3px] top-[20%] h-9 w-[3px] rounded-l-sm bg-[#a9a48f]" />
@@ -107,48 +148,6 @@ export default function AppMockup({ className = '', reactions = true, videoOverl
         <div className="relative rounded-[2.72rem] bg-black p-[9px]">
           {/* Screen */}
           <div className="screen relative aspect-[9/19.5] overflow-hidden rounded-[2.2rem] bg-gradient-to-b from-orange-500 via-orange-600 to-night">
-            {/* Video overlay on mobile */}
-            {videoOverlay && (
-              <>
-                <video
-                  ref={videoRef}
-                  src="/dually.mp4"
-                  className="absolute inset-0 h-full w-full object-cover cursor-pointer"
-                  loop
-                  playsInline
-                  onError={handleVideoError}
-                  // pointer down is a reliable user gesture for many browsers
-                  onPointerDown={(e) => {
-                    e.stopPropagation()
-                    togglePlayPause()
-                  }}
-                />
-
-                {videoError && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-red-500/80">
-                    <span className="text-xs text-white text-center px-4">{videoError}</span>
-                  </div>
-                )}
-
-                <motion.button
-                  onPointerDown={(e) => {
-                    e.stopPropagation()
-                    togglePlayPause()
-                  }}
-                  className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/40 transition-colors z-10"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 shadow-lg">
-                    {isPlaying ? (
-                      <Pause className="h-6 w-6 text-orange-500" />
-                    ) : (
-                      <Play className="h-6 w-6 text-orange-500" />
-                    )}
-                  </div>
-                </motion.button>
-              </>
-            )}
             {/* Rear-camera "scene" */}
             {!videoOverlay && (
               <>
@@ -256,6 +255,7 @@ export default function AppMockup({ className = '', reactions = true, videoOverl
           </div>
         </div>
       </div>
+      )}
     </div>
   )
 }
