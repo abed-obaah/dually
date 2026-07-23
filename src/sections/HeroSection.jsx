@@ -41,7 +41,7 @@ export default function HeroSection() {
             className="mt-7 text-5xl font-extrabold leading-[0.98] tracking-tight sm:text-6xl lg:text-7xl"
           >
             <motion.span variants={fadeUp} className="block text-orange-500">
-              Stream Life From
+              Stream Live From
             </motion.span>
             <motion.span variants={fadeUp} className="block text-ink">
               Every Angle
