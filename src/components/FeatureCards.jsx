@@ -103,7 +103,7 @@ const FEATURES = [
     icon: Camera,
     title: 'Dual Camera Streaming',
     description:
-      'Broadcast from your front and rear cameras simultaneously.',
+      'Broadcast from your phone front and rear cameras simultaneously.',
     Mock: DualCamMock,
   },
   // {
