@@ -53,8 +53,8 @@ export default function HeroSection() {
             variants={fadeUp}
             className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-ink-muted"
           >
-            Go live with dual cameras, immersive AR effects, and next-generation
-            audience engagement.
+            Go live with Dually — stream with dual cameras, share moments,
+            connect with your audience, and engage in real time.
           </motion.p>
 
           {/* CTAs */}
