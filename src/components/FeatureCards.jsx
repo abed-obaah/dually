@@ -15,7 +15,7 @@ function DualCamMock() {
   return (
     <div className="flex h-full items-center justify-center gap-3">
       <div className="relative h-32 w-20 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-orange-500/40 to-night">
-        <span className="absolute left-1.5 top-1.5 rounded bg-black/40 px-1 text-[8px] text-white">
+        <span className="absolute left-1.5 top-1.5 rounded bg-black/40 px-1 text-[0.5rem] text-white">
           Rear
         </span>
         <div className="absolute bottom-2 right-1.5 h-10 w-7 rounded-lg border border-white/50 bg-gradient-to-br from-amber-200 to-orange-500" />
@@ -24,7 +24,7 @@ function DualCamMock() {
         <Camera className="h-4 w-4" />
       </div>
       <div className="relative h-32 w-20 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-amber-300/40 to-night">
-        <span className="absolute left-1.5 top-1.5 rounded bg-black/40 px-1 text-[8px] text-white">
+        <span className="absolute left-1.5 top-1.5 rounded bg-black/40 px-1 text-[0.5rem] text-white">
           Front
         </span>
       </div>
@@ -46,7 +46,7 @@ function ArMock() {
         {['Neon', 'Aura', 'Glow'].map((f) => (
           <span
             key={f}
-            className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-medium text-white/80"
+            className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[0.625rem] font-medium text-white/80"
           >
             {f}
           </span>
@@ -59,11 +59,11 @@ function ArMock() {
 function MoneyMock() {
   return (
     <div className="flex h-full flex-col items-center justify-center gap-2.5">
-      <div className="w-full max-w-[190px] rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+      <div className="w-full max-w-[11.875rem] rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-lg font-extrabold text-white">$1,240</p>
-            <p className="text-[10px] text-white/50">Earned this stream</p>
+            <p className="text-[0.625rem] text-white/50">Earned this stream</p>
           </div>
           <span className="rounded-full bg-orange-500/20 p-2 text-orange-400">
             <TrendingUp className="h-4 w-4" />
@@ -73,7 +73,7 @@ function MoneyMock() {
           <div className="h-full w-3/4 rounded-full bg-gradient-to-r from-orange-400 to-orange-600" />
         </div>
       </div>
-      <div className="flex gap-2 text-[10px] text-white/60">
+      <div className="flex gap-2 text-[0.625rem] text-white/60">
         <span className="rounded-full bg-white/5 px-2 py-0.5">Tips</span>
         <span className="rounded-full bg-white/5 px-2 py-0.5">Subs</span>
         <span className="rounded-full bg-white/5 px-2 py-0.5">Collabs</span>
@@ -85,13 +85,13 @@ function MoneyMock() {
 function EngageMock() {
   return (
     <div className="flex h-full flex-col justify-center gap-2">
-      <div className="w-max max-w-[80%] rounded-2xl rounded-bl-sm bg-white/10 px-3 py-1.5 text-[11px] text-white/90">
+      <div className="w-max max-w-[80%] rounded-2xl rounded-bl-sm bg-white/10 px-3 py-1.5 text-[0.6875rem] text-white/90">
         <span className="font-semibold text-orange-300">@maya</span> loving this 🔥
       </div>
-      <div className="ml-auto flex items-center gap-1.5 rounded-full bg-orange-500/20 px-3 py-1.5 text-[11px] text-orange-200">
+      <div className="ml-auto flex items-center gap-1.5 rounded-full bg-orange-500/20 px-3 py-1.5 text-[0.6875rem] text-orange-200">
         <Heart className="h-3.5 w-3.5 fill-current" /> 8.2k reactions
       </div>
-      <div className="w-max max-w-[80%] rounded-2xl rounded-bl-sm bg-white/10 px-3 py-1.5 text-[11px] text-white/90">
+      <div className="w-max max-w-[80%] rounded-2xl rounded-bl-sm bg-white/10 px-3 py-1.5 text-[0.6875rem] text-white/90">
         <span className="font-semibold text-amber-300">@leo</span> dual cam!!
       </div>
     </div>
@@ -146,7 +146,7 @@ function FeatureCard({ icon: Icon, title, description, Mock }) {
         </span>
         <div>
           <h3 className="text-lg font-bold tracking-tight text-white">{title}</h3>
-          <p className="mt-1.5 text-[14px] leading-relaxed text-white/60">
+          <p className="mt-1.5 text-[0.875rem] leading-relaxed text-white/60">
             {description}
           </p>
         </div>

@@ -24,7 +24,7 @@ function StoreCard({ platform, icon: Icon, storeLabel, storeName, seed }) {
       >
         <Icon className="h-6 w-6" />
         <span className="leading-tight">
-          <span className="block text-[10px] font-medium text-ink-muted">
+          <span className="block text-[0.625rem] font-medium text-ink-muted">
             {storeLabel}
           </span>
           <span className="block text-sm font-bold">{storeName}</span>
@@ -41,7 +41,7 @@ export default function DownloadSection() {
         <div className="mx-auto max-w-3xl text-center">
           <Reveal
             as="h2"
-            className="text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl"
+            className="cta-headline font-extrabold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl"
           >
             Download Dually today and stream from{' '}
             <span className="text-orange-500">every angle</span>

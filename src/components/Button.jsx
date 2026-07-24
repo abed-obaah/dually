@@ -22,14 +22,14 @@ export default function Button({
     'group inline-flex items-center justify-center gap-2.5 font-semibold tracking-tight transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-paper'
 
   const variants = {
-    dark: 'rounded-full bg-ink text-white px-6 py-3 text-[15px] shadow-btn hover:bg-black',
+    dark: 'rounded-full bg-ink text-white px-6 py-3 text-[0.9375rem] shadow-btn hover:bg-black',
     // App-store style CTA: 12px radius rounded rectangle (matches reference)
     store:
-      'rounded-xl bg-ink text-white px-6 py-3.5 text-[15px] shadow-btn hover:bg-black',
+      'rounded-xl bg-ink text-white px-6 py-3.5 text-[0.9375rem] shadow-btn hover:bg-black',
     light:
-      'rounded-full bg-white text-ink px-6 py-3 text-[15px] shadow-soft hover:bg-white/90',
+      'rounded-full bg-white text-ink px-6 py-3 text-[0.9375rem] shadow-soft hover:bg-white/90',
     outline:
-      'rounded-full border border-black/15 bg-transparent text-ink px-6 py-3 text-[15px] hover:border-black/30',
+      'rounded-full border border-black/15 bg-transparent text-ink px-6 py-3 text-[0.9375rem] hover:border-black/30',
   }
 
   return (

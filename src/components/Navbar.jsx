@@ -24,17 +24,23 @@ export default function Navbar() {
 
   const handleMobileNav = (e, href) => {
     e.preventDefault()
-    const target = document.querySelector(href)
-    const headerHeight = headerRef.current?.offsetHeight ?? 60
 
-    if (target) {
-      const top = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 32
-      window.scrollTo({ top, behavior: 'smooth' })
-    } else {
+    const target = document.querySelector(href)
+    if (!target) {
+      setOpen(false)
       window.location.hash = href
+      return
     }
 
-    window.setTimeout(() => setOpen(false), 120)
+    // Close the menu first, then scroll once the close animation has settled.
+    // Measuring while the menu is open would include its height in the header
+    // offset, making the scroll stop short of the section.
+    setOpen(false)
+    window.setTimeout(() => {
+      const headerHeight = headerRef.current?.offsetHeight ?? 60
+      const top = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 24
+      window.scrollTo({ top, behavior: 'smooth' })
+    }, 280)
   }
 
   return (
@@ -65,7 +71,7 @@ export default function Navbar() {
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className="text-[15px] font-medium text-ink/80 transition-colors hover:text-ink"
+                  className="text-[0.9375rem] font-medium text-ink/80 transition-colors hover:text-ink"
                 >
                   {link.label}
                 </a>
@@ -79,7 +85,7 @@ export default function Navbar() {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             transition={{ type: 'spring', stiffness: 400, damping: 22 }}
-            className="hidden items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-[15px] font-semibold text-white shadow-btn hover:bg-black md:inline-flex"
+            className="hidden items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-[0.9375rem] font-semibold text-white shadow-btn hover:bg-black md:inline-flex"
           >
             Download <Download className="h-4 w-4" />
           </motion.a>
@@ -122,7 +128,7 @@ export default function Navbar() {
               <a
                 href="#download"
                 onClick={(e) => handleMobileNav(e, '#download')}
-                className="mt-3 flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-[15px] font-semibold text-white"
+                className="mt-3 flex items-center justify-center gap-2 rounded-full bg-ink px-5 py-3 text-[0.9375rem] font-semibold text-white"
               >
                 Download <Download className="h-4 w-4" />
               </a>

@@ -82,7 +82,7 @@ function ReviewCard({ name, handle, date, avatar, title, text }) {
       </div>
 
       {title && <p className="mb-1.5 text-sm font-bold text-white">{title}</p>}
-      <blockquote className="text-[14px] leading-relaxed text-white/70">
+      <blockquote className="text-[0.875rem] leading-relaxed text-white/70">
         “{text}”
       </blockquote>
 

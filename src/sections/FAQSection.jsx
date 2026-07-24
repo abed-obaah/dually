@@ -44,7 +44,7 @@ function FaqItem({ q, a, isOpen, onToggle, index }) {
         aria-expanded={isOpen}
         aria-controls={`faq-panel-${index}`}
       >
-        <span className="text-base font-bold text-ink sm:text-[17px]">{q}</span>
+        <span className="text-base font-bold text-ink sm:text-[1.0625rem]">{q}</span>
         <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center text-ink">
           {isOpen ? <Minus className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
         </span>
@@ -59,7 +59,7 @@ function FaqItem({ q, a, isOpen, onToggle, index }) {
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <p className="px-6 pb-6 text-[15px] leading-relaxed text-ink-muted">
+            <p className="px-6 pb-6 text-[0.9375rem] leading-relaxed text-ink-muted">
               {a}
             </p>
           </motion.div>

@@ -38,7 +38,7 @@ export default function HeroSection() {
           {/* Headline — reveals line by line */}
           <motion.h1
             variants={staggerContainer(0.12)}
-            className="mt-7 text-5xl font-extrabold leading-[0.98] tracking-tight sm:text-6xl lg:text-7xl"
+            className="hero-headline mt-7 font-extrabold leading-[0.98] tracking-tight sm:text-6xl lg:text-7xl"
           >
             <motion.span variants={fadeUp} className="block text-orange-500">
               Stream Live From

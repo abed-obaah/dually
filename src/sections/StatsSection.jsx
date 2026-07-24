@@ -34,7 +34,7 @@ export default function StatsSection() {
                   i > 0 ? 'sm:border-l sm:border-black/10' : ''
                 }`}
               >
-                <p className="text-[28px] font-bold leading-none tracking-tight text-ink sm:text-[32px]">
+                <p className="text-[1.75rem] font-bold leading-none tracking-tight text-ink sm:text-[2rem]">
                   {s.value}
                 </p>
                 <p className="mt-2 text-sm text-ink-muted">{s.label}</p>

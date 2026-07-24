@@ -6,6 +6,30 @@
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Never let Chrome/Samsung Internet on Android inflate our type. */
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  /*
+   * Cross-platform mobile parity.
+   *
+   * Most Android phones report a 360px CSS viewport while iPhones report
+   * 390px+. Identical px type in a narrower page reads larger and breaks
+   * lines in different places, which is why Android looked different from
+   * iOS. Scaling the root font size proportionally below 390px keeps type,
+   * spacing and line breaks landing exactly where they do on an iPhone,
+   * because Tailwind's font sizes and spacing are rem-based.
+   *
+   * 4.1026vw == 16px at exactly 390px. The 16px ceiling means this only ever
+   * scales down, so every viewport 390px and wider — i.e. all current
+   * iPhones — renders exactly as before.
+   */
+  @media (max-width: 389px) {
+    html {
+      font-size: clamp(14px, 4.1026vw, 16px);
+    }
   }
 
   body {
@@ -32,6 +56,34 @@
   /* Section container */
   .container-px {
     @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  /*
+   * Hero headline sizing.
+   *
+   * "Stream Live From" measures 8.16em with tracking-tight, so at a fixed
+   * 3rem it needs ~392px of line box: it fits on one line only on the widest
+   * iPhone viewports and wrapped onto a third line on Android's narrower
+   * ones. Fitting the size to the width actually available (page width minus
+   * the 2.5rem of container padding, with ~3% slack for fallback fonts) keeps
+   * the headline on exactly two lines on every phone. The 3rem cap means it
+   * never renders larger than it does today, so wide viewports are untouched.
+   */
+  .hero-headline {
+    font-size: min(3rem, calc((100vw - 2.5rem) / 8.4));
+  }
+
+  /*
+   * Same treatment for the download CTA heading, which held two lines only on
+   * the widest iPhone viewports and spilled onto a third everywhere narrower.
+   * Measured: it needs font-size <= 0.0777 x available width to stay on two
+   * lines; the /13.3 divisor leaves ~3% slack, and the two fallback fonts
+   * (Roboto, Arial) both measure narrower than Plus Jakarta Sans, so the
+   * webfont is the worst case. The 1.875rem cap is today's text-3xl, reached
+   * at a 442px viewport, so the widest phones render exactly as before.
+   */
+  .cta-headline {
+    font-size: min(1.875rem, calc((100vw - 2.5rem) / 13.3));
   }
 
   /* Small uppercase-ish pill badge used above section headings */
