@@ -60,7 +60,10 @@ export default function Navbar() {
           {/* Logo */}
           <a href="#top" className="flex shrink-0 items-center gap-0">
             <BrandMark className="h-9 w-9" />
-            <span className="text-lg font-extrabold tracking-tight text-ink -ml-1">
+            {/* The logo PNG carries ~8.5px of transparent padding on its right
+                edge at this size, so the wordmark needs a negative margin to
+                sit tight against the mark. */}
+            <span className="text-lg font-extrabold tracking-tight text-ink -ml-1.5">
               Dually
             </span>
           </a>
