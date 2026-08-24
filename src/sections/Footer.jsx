@@ -1,5 +1,15 @@
-import { Twitter, Instagram, Youtube, Github } from 'lucide-react'
+import { Instagram, Facebook } from 'lucide-react'
 import BrandMark from '../components/BrandMark'
+
+// lucide still ships the old Twitter bird, so the X wordmark is inlined here to
+// match the icon set's 24x24 grid and currentColor styling.
+function XIcon({ className }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  )
+}
 
 const NAV = [
   { label: 'About App', href: '#about' },
@@ -9,10 +19,17 @@ const NAV = [
 ]
 
 const SOCIALS = [
-  { icon: Twitter, label: 'Twitter' },
-  { icon: Instagram, label: 'Instagram' },
-  { icon: Youtube, label: 'YouTube' },
-  { icon: Github, label: 'GitHub' },
+  { icon: XIcon, label: 'X', href: 'https://x.com/duallyapp' },
+  {
+    icon: Instagram,
+    label: 'Instagram',
+    href: 'https://www.instagram.com/dually.app',
+  },
+  {
+    icon: Facebook,
+    label: 'Facebook',
+    href: 'https://www.facebook.com/profile.php?id=61588459963303',
+  },
 ]
 
 export default function Footer() {
@@ -46,10 +63,12 @@ export default function Footer() {
           </nav>
 
           <div className="flex gap-3">
-            {SOCIALS.map(({ icon: Icon, label }) => (
+            {SOCIALS.map(({ icon: Icon, label, href }) => (
               <a
                 key={label}
-                href="#"
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={label}
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:border-orange-500 hover:bg-orange-500/10 hover:text-orange-400"
               >
