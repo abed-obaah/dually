@@ -1,5 +1,6 @@
 import { Instagram, Facebook } from 'lucide-react'
 import BrandMark from '../components/BrandMark'
+import RouteLink from '../components/RouteLink'
 
 // lucide still ships the old Twitter bird, so the X wordmark is inlined here to
 // match the icon set's 24x24 grid and currentColor styling.
@@ -11,11 +12,13 @@ function XIcon({ className }) {
   )
 }
 
+// Rooted at "/" so they also work from the legal pages, where the landing
+// page's sections aren't mounted and a bare "#about" would do nothing.
 const NAV = [
-  { label: 'About App', href: '#about' },
-  { label: 'Features', href: '#features' },
-  { label: 'Reviews', href: '#reviews' },
-  { label: 'FAQ', href: '#faq' },
+  { label: 'About App', href: '/#about' },
+  { label: 'Features', href: '/#features' },
+  { label: 'Reviews', href: '/#reviews' },
+  { label: 'FAQ', href: '/#faq' },
 ]
 
 const SOCIALS = [
@@ -37,7 +40,7 @@ export default function Footer() {
     <footer className="bg-night pb-10 pt-24 text-white sm:pt-32">
       <div className="container-px">
         <div className="flex flex-col items-center gap-8 border-b border-white/10 pb-10 text-center">
-          <a href="#top" className="flex items-center gap-0">
+          <a href="/#top" className="flex items-center gap-0">
             <BrandMark className="h-9 w-9" />
             {/* The logo PNG carries ~8.5px of transparent padding on its right
                 edge at this size, so the wordmark needs a negative margin to
@@ -81,12 +84,12 @@ export default function Footer() {
         <div className="mt-8 flex flex-col items-center justify-between gap-4 text-sm text-white/50 sm:flex-row">
           <p>© {new Date().getFullYear()} Dually. All rights reserved.</p>
           <div className="flex gap-6">
-            <a href="#" className="transition-colors hover:text-white">
+            <RouteLink to="/privacy" className="transition-colors hover:text-white">
               Privacy Policy
-            </a>
-            <a href="#" className="transition-colors hover:text-white">
-              Terms of Service
-            </a>
+            </RouteLink>
+            <RouteLink to="/terms" className="transition-colors hover:text-white">
+              Terms &amp; Conditions
+            </RouteLink>
           </div>
         </div>
       </div>
