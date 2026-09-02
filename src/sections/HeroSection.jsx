@@ -65,7 +65,14 @@ export default function HeroSection() {
             <Button href="#download" variant="store" icon={Apple} chevron>
               Download for iOS
             </Button>
-            <Button href="#download" variant="store" icon={Play} chevron>
+            <Button
+              href="https://play.google.com/store/apps/details?id=com.app.dually"
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="store"
+              icon={Play}
+              chevron
+            >
               Download for Android
             </Button>
           </motion.div>

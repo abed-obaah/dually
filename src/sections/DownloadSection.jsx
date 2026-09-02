@@ -4,7 +4,7 @@ import Reveal from '../components/Reveal'
 import QRCode from '../components/QRCode'
 import { scaleIn } from '../lib/motion'
 
-function StoreCard({ platform, icon: Icon, storeLabel, storeName, seed }) {
+function StoreCard({ platform, icon: Icon, storeLabel, storeName, seed, href = '#' }) {
   return (
     <motion.div
       variants={scaleIn}
@@ -16,7 +16,9 @@ function StoreCard({ platform, icon: Icon, storeLabel, storeName, seed }) {
         Scan the QR code to download on {platform}
       </p>
       <motion.a
-        href="#"
+        href={href}
+        target={href !== '#' ? '_blank' : undefined}
+        rel={href !== '#' ? 'noopener noreferrer' : undefined}
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.97 }}
         transition={{ type: 'spring', stiffness: 400, damping: 22 }}
@@ -76,6 +78,7 @@ export default function DownloadSection() {
             storeLabel="Get it on"
             storeName="Google Play"
             seed={13}
+            href="https://play.google.com/store/apps/details?id=com.app.dually"
           />
         </motion.div>
       </div>
