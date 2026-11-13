@@ -35,8 +35,25 @@ function mkVideo() {
 const settingsOf = (s: MediaStream): MediaTrackSettings => s.getVideoTracks()[0]?.getSettings() ?? {};
 function differentCams(x: MediaTrackSettings, b: MediaStream) {
   const y = settingsOf(b);
-  if (x.deviceId && y.deviceId && x.deviceId !== y.deviceId) return true;
-  return !!x.facingMode && !!y.facingMode && x.facingMode !== y.facingMode;
+  if (x.deviceId && y.deviceId) return x.deviceId !== y.deviceId;
+  if (x.facingMode && y.facingMode) return x.facingMode !== y.facingMode;
+  return true; // can't tell; only asked when the device has 2+ cameras
+}
+/**
+ * Open the camera facing the other way. facingMode is tried first; if the
+ * browser hands back the same camera (no facing info), pick another device by
+ * id — preferring one whose label matches the wanted side, so a phone's extra
+ * back lenses aren't chosen as the "front" camera.
+ */
+async function openOther(mainSettings: MediaTrackSettings, facing: Facing, cams: MediaDeviceInfo[]): Promise<MediaStream> {
+  const s = await camera(facing);
+  if (differentCams(mainSettings, s)) return s;
+  s.getTracks().forEach((t) => t.stop());
+  const want = facing === 'user' ? /front|user|face|selfie/i : /back|rear|environment|world/i;
+  const others = cams.filter((d) => d.deviceId && d.deviceId !== mainSettings.deviceId);
+  const pick = others.find((d) => want.test(d.label)) ?? others[0];
+  if (!pick) throw new Error('no other camera');
+  return navigator.mediaDevices.getUserMedia({ video: { deviceId: { exact: pick.deviceId }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false });
 }
 async function attach(v: HTMLVideoElement, s: MediaStream | null) {
   v.srcObject = s;
@@ -85,37 +102,59 @@ export default function HostLive() {
     streams.current = { main: null, pip: null };
   };
 
-  /** Open the main camera, then try the other one as PiP (kept only if both stay live). */
+  /**
+   * Same strategy as the Camera tab (works in every phone browser):
+   * 1. open the main camera; count cameras;
+   * 2. if there are two, try running both at once (many Android phones) → live PiP;
+   * 3. otherwise (iPhone, or Chrome refusing a 2nd camera) briefly switch to the
+   *    other camera on its own, keep one frame as the PiP still, switch back.
+   */
   const openCams = useCallback(async (facing: Facing, wantDual: boolean) => {
     stopCams();
+    const otherFacing: Facing = facing === 'user' ? 'environment' : 'user';
     const main = await camera(facing);
     streams.current.main = main;
     await attach(mainV.current, main);
     const mainSettings = settingsOf(main); // read now: on iPhone opening the 2nd camera ends this track
     let ok = false;
     if (wantDual) {
-      try {
-        const pip = await camera(facing === 'user' ? 'environment' : 'user');
-        await sleep(300);
-        if (trackOk(main) && trackOk(pip) && differentCams(mainSettings, pip)) {
-          streams.current.pip = pip;
-          await attach(pipV.current, pip);
-          ok = true;
-        } else {
-          const distinct = trackOk(pip) && differentCams(mainSettings, pip);
-          if (distinct) {
+      let cams: MediaDeviceInfo[] = [];
+      try { cams = (await navigator.mediaDevices.enumerateDevices()).filter((d) => d.kind === 'videoinput'); } catch { /* ignore */ }
+      const two = cams.length >= 2;
+      if (two) {
+        try {
+          const pip = await openOther(mainSettings, otherFacing, cams);
+          await sleep(500);
+          if (trackOk(streams.current.main) && trackOk(pip) && differentCams(mainSettings, pip)) {
+            streams.current.pip = pip;
             await attach(pipV.current, pip);
-            stillRef.current = snapshot(pipV.current);
-            pipV.current.srcObject = null;
+            ok = true;
+          } else {
+            pip.getTracks().forEach((t) => t.stop());
           }
-          pip.getTracks().forEach((t) => t.stop());
-          if (!trackOk(main)) {
-            main.getTracks().forEach((t) => t.stop());
-            streams.current.main = await camera(facing);
-            await attach(mainV.current, streams.current.main);
-          }
+        } catch { /* this browser can't run two cameras at once */ }
+        if (!ok) {
+          // One camera at a time: grab a still of the other camera, then reopen the main one.
+          streams.current.main?.getTracks().forEach((t) => t.stop());
+          streams.current.main = null;
+          let o: MediaStream | null = null;
+          try {
+            o = await openOther(mainSettings, otherFacing, cams);
+            if (differentCams(mainSettings, o)) {
+              await attach(pipV.current, o);
+              await sleep(250); // let exposure settle
+              stillRef.current = snapshot(pipV.current) ?? stillRef.current;
+            }
+          } catch { /* keep whatever still we had */ }
+          o?.getTracks().forEach((t) => t.stop());
+          pipV.current.srcObject = null;
+          const back = mainSettings.deviceId
+            ? await navigator.mediaDevices.getUserMedia({ video: { deviceId: { exact: mainSettings.deviceId }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false }).catch(() => camera(facing))
+            : await camera(facing);
+          streams.current.main = back;
+          await attach(mainV.current, back);
         }
-      } catch { /* single camera */ }
+      }
     }
     facingRef.current = facing;
     dualRef.current = ok;
