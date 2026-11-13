@@ -1,2 +1,6 @@
 import type { AppRoute } from '../../app/types';
-export const routes: AppRoute[] = [];
+import Preview from './Preview';
+
+export const routes: AppRoute[] = [
+  { path: '/camera/preview', element: <Preview />, tabBar: false },
+];
