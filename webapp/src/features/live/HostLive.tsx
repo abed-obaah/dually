@@ -4,7 +4,7 @@
 // cameras, otherwise a single camera with flip) and published to Agora as a
 // custom 480×848 / 15 fps / 800 kbps H.264 track, exactly what app viewers get.
 // Chat/hearts/gifts use the shared Firestore room. Ends in the Live Summary.
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useNav } from '../../lib/nav';
 import { session } from '../../lib/session';
 import { store } from '../../lib/storage';
@@ -23,6 +23,21 @@ const camera = (facing: Facing) => navigator.mediaDevices.getUserMedia({
   video: { facingMode: { ideal: facing }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false,
 });
 const trackOk = (s: MediaStream | null) => { const t = s?.getVideoTracks()[0]; return !!t && t.readyState === 'live' && !t.muted; };
+/** Phones only decode camera video that is inline, muted and in the document (like the Camera tab's <video>s). */
+function mkVideo() {
+  const v = document.createElement('video');
+  v.muted = true; v.playsInline = true; v.autoplay = true;
+  v.setAttribute('playsinline', ''); v.setAttribute('muted', '');
+  v.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover';
+  return v;
+}
+/** Two streams are different cameras if their device ids or facing modes differ. */
+const settingsOf = (s: MediaStream): MediaTrackSettings => s.getVideoTracks()[0]?.getSettings() ?? {};
+function differentCams(x: MediaTrackSettings, b: MediaStream) {
+  const y = settingsOf(b);
+  if (x.deviceId && y.deviceId && x.deviceId !== y.deviceId) return true;
+  return !!x.facingMode && !!y.facingMode && x.facingMode !== y.facingMode;
+}
 async function attach(v: HTMLVideoElement, s: MediaStream | null) {
   v.srcObject = s;
   if (!s) return;
@@ -39,8 +54,10 @@ const PIP = (() => {
 export default function HostLive() {
   const nav = useNav();
   const view = useRef<HTMLCanvasElement>(null);
-  const mainV = useRef<HTMLVideoElement>(document.createElement('video'));
-  const pipV = useRef<HTMLVideoElement>(document.createElement('video'));
+  const mainV = useRef<HTMLVideoElement>(mkVideo());
+  const pipV = useRef<HTMLVideoElement>(mkVideo());
+  const videoHost = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => { videoHost.current?.append(mainV.current, pipV.current); }, []);
   const streams = useRef<{ main: MediaStream | null; pip: MediaStream | null }>({ main: null, pip: null });
   const facingRef = useRef<Facing>('environment');
   const dualRef = useRef(false);
@@ -74,17 +91,18 @@ export default function HostLive() {
     const main = await camera(facing);
     streams.current.main = main;
     await attach(mainV.current, main);
+    const mainSettings = settingsOf(main); // read now: on iPhone opening the 2nd camera ends this track
     let ok = false;
     if (wantDual) {
       try {
         const pip = await camera(facing === 'user' ? 'environment' : 'user');
         await sleep(300);
-        if (trackOk(main) && trackOk(pip) && pip.getVideoTracks()[0].getSettings().deviceId !== main.getVideoTracks()[0].getSettings().deviceId) {
+        if (trackOk(main) && trackOk(pip) && differentCams(mainSettings, pip)) {
           streams.current.pip = pip;
           await attach(pipV.current, pip);
           ok = true;
         } else {
-          const distinct = trackOk(pip) && pip.getVideoTracks()[0].getSettings().deviceId !== main.getVideoTracks()[0].getSettings().deviceId;
+          const distinct = trackOk(pip) && differentCams(mainSettings, pip);
           if (distinct) {
             await attach(pipV.current, pip);
             stillRef.current = snapshot(pipV.current);
@@ -298,6 +316,7 @@ export default function HostLive() {
 
   return (
     <div className="screen overflow-hidden bg-black">
+      <div ref={videoHost} aria-hidden className="pointer-events-none absolute inset-0" />
       <canvas ref={view} width={OUT_W} height={OUT_H} className="absolute inset-0 h-full w-full object-cover" />
       <Hearts ref={hearts} />
       <GiftBurst ref={burst} />
