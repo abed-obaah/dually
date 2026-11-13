@@ -177,7 +177,7 @@ export function Cart() {
           {count} item{count === 1 ? '' : 's'} selected
         </div>
       </div>
-      <div className="px-[16px] pb-[110px] pt-[16px]">
+      <div className="px-[16px] pb-[20px] pt-[16px]">
         {badges.length > 0 && (
           <>
             <div className="mb-[10px] text-[16px] font-bold text-ink">Suggested Items to Buy</div>
@@ -200,9 +200,9 @@ export function Cart() {
         )}
       </div>
       {count > 0 && (
-        <div className="pb-safe fixed inset-x-0 bottom-0 z-10 mx-auto max-w-[480px] bg-white px-[16px] pt-[12px] shadow-[0_-2px_10px_rgba(0,0,0,.06)]">
+        <div className="sticky z-10 px-[16px]" style={{ bottom: 'calc(var(--tabbar) + var(--sab) + 16px)' }}>
           <button onClick={proceed} disabled={!inSync || busy}
-            className="mb-[12px] h-[56px] w-full rounded-[12px] bg-primary text-[16px] font-bold text-white disabled:opacity-50">
+            className="h-[56px] w-full rounded-[12px] bg-primary text-[16px] font-bold text-white shadow-[0_4px_14px_rgba(3,132,179,.35)] disabled:opacity-50">
             Proceed to pay
           </button>
         </div>

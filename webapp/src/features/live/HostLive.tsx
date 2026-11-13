@@ -10,7 +10,7 @@ import { session } from '../../lib/session';
 import { store } from '../../lib/storage';
 import { Img } from '../../ui/icons';
 import { Hud, showAlert } from '../../ui/overlays';
-import { OUT_H, OUT_W, canRecordVideo, canvas, drawDual, mapPip, recordCanvas, type Recorder } from '../camera/media';
+import { OUT_H, OUT_W, canRecordVideo, drawDual, mapPip, recordCanvas, snapshot, type Recorder } from '../camera/media';
 import { AGORA_APP_ID, joinErrorText, loadAgora, withTimeout } from './agora';
 import { endLive, fmtCount, mmss, pollLive, startLive, type LiveSession } from './api';
 import { deleteDoc, isGiftKey, listen, sendComment, sendHeart, sendJoined, type ChatDoc } from './chat';
@@ -44,6 +44,8 @@ export default function HostLive() {
   const streams = useRef<{ main: MediaStream | null; pip: MediaStream | null }>({ main: null, pip: null });
   const facingRef = useRef<Facing>('environment');
   const dualRef = useRef(false);
+  /** iPhone & co. can't run two cameras: a still of the other camera fills the PiP (as in the Camera tab). */
+  const stillRef = useRef<HTMLCanvasElement | null>(null);
 
   const [live, setLive] = useState<LiveSession | null>(null);
   const [elapsed, setElapsed] = useState(0);
@@ -82,6 +84,12 @@ export default function HostLive() {
           await attach(pipV.current, pip);
           ok = true;
         } else {
+          const distinct = trackOk(pip) && pip.getVideoTracks()[0].getSettings().deviceId !== main.getVideoTracks()[0].getSettings().deviceId;
+          if (distinct) {
+            await attach(pipV.current, pip);
+            stillRef.current = snapshot(pipV.current);
+            pipV.current.srcObject = null;
+          }
           pip.getTracks().forEach((t) => t.stop());
           if (!trackOk(main)) {
             main.getTracks().forEach((t) => t.stop());
@@ -103,7 +111,8 @@ export default function HostLive() {
       const m = mainV.current;
       if (!m.videoWidth) return;
       const mirror = facingRef.current === 'user';
-      drawDual(ctx, m, mirror, 1, dualRef.current && pipV.current.videoWidth ? pipV.current : null, !mirror, PIP);
+      const pip = dualRef.current && pipV.current.videoWidth ? pipV.current : stillRef.current;
+      drawDual(ctx, m, mirror, 1, pip, !mirror, PIP);
     };
     rt.current.draw = window.setInterval(frame, 1000 / 30);
   };
@@ -270,8 +279,12 @@ export default function HostLive() {
       const f: Facing = facingRef.current === 'user' ? 'environment' : 'user';
       facingRef.current = f;
     } else {
-      try { await openCams(facingRef.current === 'user' ? 'environment' : 'user', false); }
-      catch { showAlert('Unable to switch camera.'); }
+      // One camera at a time: the current main becomes the PiP still.
+      const prev = stillRef.current ? snapshot(mainV.current) : null;
+      try {
+        await openCams(facingRef.current === 'user' ? 'environment' : 'user', false);
+        if (prev) stillRef.current = prev;
+      } catch { showAlert('Unable to switch camera.'); }
     }
   };
 
