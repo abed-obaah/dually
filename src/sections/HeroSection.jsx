@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Apple, Play } from 'lucide-react'
+import { Apple, Play, MonitorSmartphone } from 'lucide-react'
 import Button from '../components/Button'
 import AppMockup from '../components/AppMockup'
 import BrandMark from '../components/BrandMark'
@@ -62,7 +62,14 @@ export default function HeroSection() {
             variants={fadeUp}
             className="mt-9 flex flex-col items-center gap-3 sm:flex-row"
           >
-            <Button href="#download" variant="store" icon={Apple} chevron>
+            <Button
+              href="https://apps.apple.com/ng/app/id6740854675"
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="store"
+              icon={Apple}
+              chevron
+            >
               Download for iOS
             </Button>
             <Button
@@ -74,6 +81,9 @@ export default function HeroSection() {
               chevron
             >
               Download for Android
+            </Button>
+            <Button href="/app/?install=1" variant="outline" icon={MonitorSmartphone}>
+              Use on the web
             </Button>
           </motion.div>
         </motion.div>

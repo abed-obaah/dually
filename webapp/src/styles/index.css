@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face { font-family: 'Poppins'; src: url('/app/fonts/Poppins-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('/app/fonts/Poppins-Medium.ttf') format('truetype'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('/app/fonts/Poppins-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+
+:root {
+  --primary: #0384B3;
+  --secondary: #07A5DE;
+  --nav-pill: #04729B;
+  --ink: #0F1A22;
+  --label: #1A2730;
+  --caption: #8A97A0;
+  --muted: #5B6770;
+  --page: #F4F6F8;
+  --hairline: #EFF2F4;
+  --card-stroke: #EEF1F3;
+  --chip: #EAF4FA;
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  /* Height of the floating tab bar band (TabBarAndroidParity.reservedHeight). */
+  --tabbar: 70px;
+}
+
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+  background: #0B0F14;
+  color: var(--ink);
+}
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+input, textarea, select { font: inherit; }
+img { -webkit-user-drag: none; user-select: none; }
+
+/* On phones the app is full screen. On wider screens it renders inside a
+   phone-sized column (402pt = iPhone 17 Pro width) so layouts stay identical. */
+.device {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  margin: 0 auto;
+  overflow: hidden;
+  background: #000;
+  isolation: isolate;
+  transform: translateZ(0); /* make position:fixed children relative to the device */
+}
+@media (min-width: 600px) {
+  body { display: grid; place-items: center; background: radial-gradient(circle at 50% 30%, #12303f, #04090d 70%); }
+  .device { width: 402px; height: min(874px, 100dvh - 32px); border-radius: 44px; box-shadow: 0 0 0 10px #111, 0 30px 80px rgba(0,0,0,.6); }
+}
+
+.font-poppins { font-family: 'Poppins', system-ui, sans-serif; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+.screen { position: absolute; inset: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.pt-safe { padding-top: var(--sat); }
+.pb-safe { padding-bottom: var(--sab); }
+/* Bottom padding for tabs that are not full-bleed. */
+.pb-tabbar { padding-bottom: calc(var(--tabbar) + var(--sab) + 8px); }
+
+/* Tintable template glyph (iOS template images / SF Symbols). */
+.glyph { display: inline-block; background-color: currentColor; -webkit-mask: var(--src) center / contain no-repeat; mask: var(--src) center / contain no-repeat; }
+
+@keyframes hud-spin { to { transform: rotate(360deg); } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes alert-in { from { opacity: 0; transform: scale(1.12); } to { opacity: 1; transform: scale(1); } }
+@keyframes sheet-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes push-in { from { transform: translateX(100%); } to { transform: translateX(0); } }
+.anim-push { animation: push-in .28s cubic-bezier(.2,.8,.2,1); }
+.anim-sheet { animation: sheet-up .3s cubic-bezier(.2,.8,.2,1); }
+.anim-fade { animation: fade-in .2s ease-out; }

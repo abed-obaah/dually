@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
-import { Apple, Play } from 'lucide-react'
+import { Apple, Play, Globe } from 'lucide-react'
 import Reveal from '../components/Reveal'
 import QRCode from '../components/QRCode'
 import { scaleIn } from '../lib/motion'
 
-function StoreCard({ platform, icon: Icon, storeLabel, storeName, seed, href = '#' }) {
+function StoreCard({ platform, icon: Icon, storeLabel, storeName, seed, href = '#', external = true, note }) {
   return (
     <motion.div
       variants={scaleIn}
@@ -13,12 +13,12 @@ function StoreCard({ platform, icon: Icon, storeLabel, storeName, seed, href = '
       <p className="mb-4 text-sm font-semibold text-white/60">{platform}</p>
       <QRCode seed={seed} className="h-32 w-32" />
       <p className="mt-4 mb-4 max-w-[10rem] text-xs text-white/50">
-        Scan the QR code to download on {platform}
+        {note ?? `Scan the QR code to download on ${platform}`}
       </p>
       <motion.a
         href={href}
-        target={href !== '#' ? '_blank' : undefined}
-        rel={href !== '#' ? 'noopener noreferrer' : undefined}
+        target={external && href !== '#' ? '_blank' : undefined}
+        rel={external && href !== '#' ? 'noopener noreferrer' : undefined}
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.97 }}
         transition={{ type: 'spring', stiffness: 400, damping: 22 }}
@@ -63,7 +63,7 @@ export default function DownloadSection() {
           whileInView="show"
           viewport={{ once: true, amount: 0.3 }}
           variants={{ show: { transition: { staggerChildren: 0.12 } } }}
-          className="mx-auto mt-14 grid max-w-2xl grid-cols-1 gap-6 sm:grid-cols-2"
+          className="mx-auto mt-14 grid max-w-4xl grid-cols-1 gap-6 sm:grid-cols-3"
         >
           <StoreCard
             platform="iOS"
@@ -71,6 +71,7 @@ export default function DownloadSection() {
             storeLabel="Download on the"
             storeName="App Store"
             seed={7}
+            href="https://apps.apple.com/ng/app/id6740854675"
           />
           <StoreCard
             platform="Android"
@@ -79,6 +80,16 @@ export default function DownloadSection() {
             storeName="Google Play"
             seed={13}
             href="https://play.google.com/store/apps/details?id=com.app.dually"
+          />
+          <StoreCard
+            platform="Web"
+            icon={Globe}
+            storeLabel="Install the"
+            storeName="Web App"
+            seed={21}
+            href="/app/?install=1"
+            external={false}
+            note="Open Dually in your browser and add it to your home screen"
           />
         </motion.div>
       </div>

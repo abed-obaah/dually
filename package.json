@@ -3,11 +3,13 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Dually — Dual-Camera Live Streaming Social App with AR. React + Vite + Tailwind landing page.",
+  "description": "Dually \u2014 Dual-Camera Live Streaming Social App with AR. React + Vite + Tailwind landing page.",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "vite build && npm run build:app",
+    "preview": "vite preview",
+    "build:app": "npm --prefix webapp ci && npm --prefix webapp run build && rm -rf dist/app && cp -R webapp/dist dist/app",
+    "dev:app": "npm --prefix webapp run dev"
   },
   "dependencies": {
     "framer-motion": "^11.3.19",
