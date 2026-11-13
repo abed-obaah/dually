@@ -75,3 +75,6 @@ img { -webkit-user-drag: none; user-select: none; }
 .anim-push { animation: push-in .28s cubic-bezier(.2,.8,.2,1); }
 .anim-sheet { animation: sheet-up .3s cubic-bezier(.2,.8,.2,1); }
 .anim-fade { animation: fade-in .2s ease-out; }
+@keyframes live-gift-in { 0% { opacity: 0; transform: scale(.6) rotate(-6deg); } 52% { opacity: 1; } 100% { opacity: 1; transform: scale(1) rotate(0); } }
+@keyframes live-gift-out { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-40px); } }
+@keyframes live-pop { 0% { transform: scale(1); } 40% { transform: scale(1.25); } 100% { transform: scale(1); } }

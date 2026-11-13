@@ -10,6 +10,7 @@ import { routes as exploreRoutes } from '../features/explore/routes';
 import { routes as cameraRoutes } from '../features/camera/routes';
 import { routes as profileRoutes } from '../features/profile/routes';
 import { routes as settingsRoutes } from '../features/settings/routes';
+import { routes as liveRoutes } from '../features/live/routes';
 
 const ROOTS: Record<Tab, ComponentType<{ active: boolean }>> = {
   home: lazy(() => import('../features/home/HomeTab')),
@@ -19,7 +20,7 @@ const ROOTS: Record<Tab, ComponentType<{ active: boolean }>> = {
   settings: lazy(() => import('../features/settings/SettingsTab')),
 };
 
-export const PUSHED: AppRoute[] = [...homeRoutes, ...exploreRoutes, ...cameraRoutes, ...profileRoutes, ...settingsRoutes];
+export const PUSHED: AppRoute[] = [...homeRoutes, ...exploreRoutes, ...cameraRoutes, ...profileRoutes, ...settingsRoutes, ...liveRoutes];
 
 /** Which tab a URL belongs to. Pushed screens outside a tab prefix keep the last tab. */
 function tabFor(path: string, fallback: Tab): Tab {

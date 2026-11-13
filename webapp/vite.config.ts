@@ -31,12 +31,28 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,webp,ttf,woff2}'],
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
+        // Live-only SDKs (Agora, Firebase) are fetched on first use, then cached.
+        globIgnores: ['**/assets/agora-*.js', '**/assets/firebase-*.js'],
         navigateFallback: '/app/index.html',
         navigateFallbackAllowlist: [/^\/app\//],
         // API + media always come from the network.
-        runtimeCaching: [],
+        runtimeCaching: [{
+          urlPattern: /\/app\/assets\/(agora|firebase)-.*\.js$/,
+          handler: 'CacheFirst',
+          options: { cacheName: 'live-sdk', expiration: { maxEntries: 8 } },
+        }],
       },
     }),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/agora-rtc-sdk-ng')) return 'agora';
+          if (id.includes('node_modules/firebase') || id.includes('node_modules/@firebase')) return 'firebase';
+        },
+      },
+    },
+  },
   server: { port: 5174 },
 });

@@ -2,7 +2,9 @@ import type { AppRoute } from '../../app/types';
 import { AccountPrivacy, ChangePassword, NotificationSettings } from './AccountScreens';
 import { Blocked, BlockedCommenters, CommentsPrivacy } from './BlockScreens';
 import { About, DeleteAccount, Help, HelpCenter, PrivacyPolicy, RaiseQuery, Terms } from './SupportScreens';
-import { Cart, CashKyc, LiveActivity, Wallet } from './DeferredScreens';
+import { LiveActivity, Wallet } from './DeferredScreens';
+import { Cart } from '../payments/Cart';
+import { CashKyc, Withdraw } from '../payments/Payout';
 
 export const routes: AppRoute[] = [
   { path: '/settings/privacy', element: <AccountPrivacy /> },
@@ -21,5 +23,6 @@ export const routes: AppRoute[] = [
   { path: '/settings/wallet', element: <Wallet /> },
   { path: '/settings/cart', element: <Cart /> },
   { path: '/settings/kyc', element: <CashKyc /> },
+  { path: '/settings/withdraw', element: <Withdraw /> },
   { path: '/settings/live-activity', element: <LiveActivity /> },
 ];

@@ -449,7 +449,7 @@ export default function CameraTab({ active }: { active: boolean }) {
     if (state !== 'on') { if (state !== 'starting') start(); return; }
     if (mode === 'Photo') takePhoto();
     else if (mode === 'Video') { if (recording) stopRecording(); else startRecording(); }
-    else showAlert('Going live is coming soon on the web. Please use the Dually app to go live.');
+    else nav.push('/camera/live');
   };
 
   // ── gallery (single image or video) ──

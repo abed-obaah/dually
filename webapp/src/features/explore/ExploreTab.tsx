@@ -338,8 +338,9 @@ function GridTile({ post, onClick }: { post: any; onClick: () => void }) {
 
 function LiveRow({ item }: { item: any }) {
   const name = (item?.user?.fullName ?? '').trim();
+  const nav = useNav();
   return (
-    <button onClick={() => showAlert('Coming soon on the web.')} className="flex h-[64px] w-full items-center text-left">
+    <button onClick={() => item?._id && nav.push(`/live/${item._id}`)} className="flex h-[64px] w-full items-center text-left">
       <div className="relative ml-[6px] h-[46px] w-[46px] shrink-0 rounded-full p-[2px]" style={{ background: '#FF2D55' }}>
         <Avatar src={item?.user?.image} size={42} />
         <div className="absolute left-1/2 flex h-[15px] w-[30px] -translate-x-1/2 items-center justify-center rounded-[3px] text-[8px] font-bold text-white"

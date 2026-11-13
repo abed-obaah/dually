@@ -1,6 +1,5 @@
-// Deferred screens (§15): Wallet (read-only gift quantities), Cart (layout only),
-// Cash KYC, Live activity. Purchases/payments → "Coming soon on the web.".
-import { useEffect, useMemo, useState } from 'react';
+// Wallet (gift quantities) and Live activity. Cart / KYC / Withdraw live in features/payments.
+import { useEffect, useState } from 'react';
 import { api } from '../../api/client';
 import { useNav } from '../../lib/nav';
 import { store } from '../../lib/storage';
@@ -9,7 +8,6 @@ import { Img, SF } from '../../ui/icons';
 import { showAlert, withHud } from '../../ui/overlays';
 import { errMsg, SFX } from './shared';
 
-const COMING_SOON = 'Coming soon on the web.';
 const num = (v: any) => (Number.isFinite(Number(v)) ? Number(v) : 0);
 
 // ───────────────────────── Wallet ─────────────────────────
@@ -54,128 +52,6 @@ export function Wallet() {
         ))}
       </div>
     </DetailPage>
-  );
-}
-
-// ───────────────────────── Cart (layout only) ─────────────────────────
-
-const GIFT_ART: Record<string, string> = { King: 'King2_2000', Queen: 'Queen2000', Rook: 'Queen2000', Pawn: 'Man2000', Knight: 'Horse2000', Bishop: 'Camel2000' };
-
-function Check({ on }: { on: boolean }) {
-  return (
-    <span className={`flex h-[22px] w-[22px] items-center justify-center rounded-full border-2 ${on ? 'border-primary bg-primary text-white' : 'border-[#C9D2D8] bg-white'}`}>
-      {on && <SFX.check size={13} weight={3} />}
-    </span>
-  );
-}
-
-export function Cart() {
-  const [products, setProducts] = useState<any[]>([]);
-  const [picked, setPicked] = useState<Set<string>>(new Set());
-
-  useEffect(() => {
-    let alive = true;
-    withHud(() => api('api/v1/user/product'))
-      .then((r) => { if (alive) setProducts(Array.isArray(r?.data) ? r.data : []); })
-      .catch((e) => { if (alive) showAlert(errMsg(e)); });
-    return () => { alive = false; };
-  }, []);
-
-  const badges = products.filter((p) => /verified badge/i.test(String(p?.name ?? '')));
-  const gifts = products.filter((p) => GIFT_ART[String(p?.name ?? '')]);
-  const toggle = (id: string) => setPicked((s) => { const n = new Set(s); n.has(id) ? n.delete(id) : n.add(id); return n; });
-  const { total, count } = useMemo(() => {
-    let t = 0, c = 0;
-    products.forEach((p) => { if (picked.has(p?._id)) { t += num(p?.priceUsd); c += 1; } });
-    return { total: t, count: c };
-  }, [products, picked]);
-
-  return (
-    <DetailPage title="Cart">
-      <div className="mt-[14px] flex flex-col items-center gap-[4px] px-[20px]">
-        <div className="text-[11px] text-caption">Order total</div>
-        <div className="text-[24px] font-bold text-ink">$ {total.toFixed(2)}</div>
-        <div className="mt-[2px] flex h-[24px] min-w-[90px] items-center justify-center rounded-[12px] bg-page px-[10px] text-[12px] text-label">
-          {count} item{count === 1 ? '' : 's'} selected
-        </div>
-      </div>
-      <div className="px-[16px] pt-[16px]">
-        {badges.length > 0 && (
-          <>
-            <div className="mb-[10px] text-[16px] font-bold text-ink">Suggested Items to Buy</div>
-            <div className="grid grid-cols-2 gap-[12px]">
-              {badges.map((p) => {
-                const on = picked.has(p._id);
-                return (
-                  <button key={p._id} onClick={() => toggle(p._id)}
-                    className={`relative flex flex-col items-start rounded-[16px] border p-[12px] text-left ${on ? 'border-primary bg-[#F2FAFD]' : 'border-cardstroke bg-white'}`}>
-                    <span className="flex h-[34px] w-[34px] items-center justify-center rounded-[10px] bg-chip"><Img name="ic_verified" size={20} /></span>
-                    <span className="mt-[8px] text-[14px] font-semibold text-ink">{p.name}</span>
-                    <span className="mt-[2px] text-[14px] font-bold text-primary">$ {num(p.priceUsd).toFixed(2)}</span>
-                    <span className="absolute right-[10px] top-[10px]"><Check on={on} /></span>
-                  </button>
-                );
-              })}
-            </div>
-          </>
-        )}
-        {gifts.length > 0 && (
-          <>
-            <div className="mb-[10px] mt-[18px] text-[16px] font-bold text-ink">Buy more gifts to send</div>
-            <div className="grid grid-cols-3 gap-[8px] rounded-[18px] border border-cardstroke bg-white p-[10px]">
-              {gifts.map((p) => {
-                const on = picked.has(p._id);
-                return (
-                  <button key={p._id} onClick={() => toggle(p._id)} className="relative flex flex-col items-center rounded-[14px] py-[8px]">
-                    <span className="flex h-[48px] w-[48px] items-center justify-center rounded-[14px] border border-[#F6E4B8] bg-[#FFF6E2]">
-                      <Img name={GIFT_ART[p.name]} className="h-[38px] w-[30px]" />
-                    </span>
-                    <span className="mt-[6px] text-[13px] font-semibold text-ink">{p.name}</span>
-                    <span className="text-[12px] font-bold text-primary">$ {num(p.priceUsd).toFixed(2)}</span>
-                    <span className="absolute right-[4px] top-[4px] scale-[.8]"><Check on={on} /></span>
-                  </button>
-                );
-              })}
-            </div>
-          </>
-        )}
-        {count > 0 && (
-          <button onClick={() => showAlert(COMING_SOON)} className="mt-[20px] h-[56px] w-full rounded-[12px] bg-primary text-[16px] font-bold text-white">
-            Proceed to pay
-          </button>
-        )}
-      </div>
-    </DetailPage>
-  );
-}
-
-// ───────────────────────── Cash KYC ─────────────────────────
-
-export function CashKyc() {
-  const nav = useNav();
-  // Exception to the app chrome: the system iOS navigation bar is shown here.
-  return (
-    <div className="screen bg-page">
-      <div className="pt-safe sticky top-0 z-20 bg-page/95 backdrop-blur">
-        <div className="relative flex h-[44px] items-center justify-center">
-          <button onClick={() => nav.back()} className="absolute left-[8px] flex h-[44px] items-center text-[17px] text-[#007AFF]">
-            <SF.chevronLeft size={22} weight={2.4} /><span className="-ml-[2px]">Back</span>
-          </button>
-          <div className="text-[17px] font-semibold text-black">Cash KYC</div>
-        </div>
-      </div>
-      <div className="flex flex-col items-center px-[24px] pb-tabbar pt-[48px] text-center">
-        <div className="flex h-[100px] w-[100px] items-center justify-center rounded-full bg-[#EAF4FB] text-primary">
-          <SFX.buildingColumns size={48} />
-        </div>
-        <div className="mt-[20px] text-[22px] font-bold leading-[27px] text-ink">Link Your Bank Account</div>
-        <div className="mt-[20px] text-[14px] leading-[18px] text-muted">Connect your bank account to withdraw your earnings securely.</div>
-        <button onClick={() => showAlert('Bank account linking is not yet configured on this device.', 'Bank Linking')}
-          className="mt-[32px] h-[50px] w-full rounded-[12px] bg-[#D32F2F] text-[15px] font-semibold text-white">
-          Start Verification
-        </button>
-      </div>
-    </div>
   );
 }
 

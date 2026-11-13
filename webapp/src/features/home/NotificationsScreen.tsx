@@ -62,7 +62,12 @@ export default function NotificationsScreen() {
   }, [items]);
 
   const openRow = (n: any) => {
-    if (n?.title === 'Live') { showAlert('Coming soon on the web.'); return; }
+    if (n?.title === 'Live') {
+      const d = parseDate(n?.createdAt);
+      if (d && Date.now() - d.getTime() > TWO_HOURS) { showAlert('This live has ended.'); return; }
+      if (n?.channelId) nav.push(`/live/${n.channelId}`);
+      return;
+    }
     const pid = idOf(n?.post);
     if (pid) nav.push(`/post/${pid}`, { post: typeof n.post === 'object' ? n.post : undefined, openComments: n?.title === 'comment Post' });
   };
@@ -124,7 +129,7 @@ function NotificationRow({ n, onOpen, onUser }: { n: any; onOpen: () => void; on
         <span className="text-[10px] text-[#AAAAAA]">{timeAgo(n?.createdAt)}</span>
       </div>
       {fresh && (
-        <button onClick={(e) => { e.stopPropagation(); showAlert('Coming soon on the web.'); }}
+        <button onClick={(e) => { e.stopPropagation(); onOpen(); }}
           className="ml-[10px] h-[29px] w-[100px] shrink-0 rounded-[14px] bg-primary text-[13px] font-semibold text-white">
           Join
         </button>
