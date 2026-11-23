@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Apple, Play, Globe } from 'lucide-react'
+import { Apple, Play } from 'lucide-react'
 import Reveal from '../components/Reveal'
 import QRCode from '../components/QRCode'
 import { scaleIn } from '../lib/motion'
@@ -63,7 +63,7 @@ export default function DownloadSection() {
           whileInView="show"
           viewport={{ once: true, amount: 0.3 }}
           variants={{ show: { transition: { staggerChildren: 0.12 } } }}
-          className="mx-auto mt-14 grid max-w-4xl grid-cols-1 gap-6 sm:grid-cols-3"
+          className="mx-auto mt-14 grid max-w-2xl grid-cols-1 gap-6 sm:grid-cols-2"
         >
           <StoreCard
             platform="iOS"
@@ -80,16 +80,6 @@ export default function DownloadSection() {
             storeName="Google Play"
             seed={13}
             href="https://play.google.com/store/apps/details?id=com.app.dually"
-          />
-          <StoreCard
-            platform="Web"
-            icon={Globe}
-            storeLabel="Install the"
-            storeName="Web App"
-            seed={21}
-            href="/app/?install=1"
-            external={false}
-            note="Open Dually in your browser and add it to your home screen"
           />
         </motion.div>
       </div>
